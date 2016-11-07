@@ -8,13 +8,13 @@ import (
 	"os"
 )
 
-var KYP_GATEWAY_ENDPOINT = os.Getenv("KYP_GATEWAY_ENDPOINT")
+var KYP_GATEWAY_HOST = os.Getenv("KYP_GATEWAY_HOST")
 var KYP_PROXY_PORT = os.Getenv("KYP_PROXY_PORT")
 
 func main() {
 	proxy := httputil.NewSingleHostReverseProxy(&url.URL{
 		Scheme: "http",
-		Host:   KYP_GATEWAY_ENDPOINT,
+		Host:   KYP_GATEWAY_HOST,
 	})
 
 	proxy.Director = director
@@ -25,7 +25,7 @@ func main() {
 }
 
 func director(r *http.Request) {
-	r.URL.Host = KYP_GATEWAY_ENDPOINT
+	r.URL.Host = KYP_GATEWAY_HOST
 	r.URL.Scheme = "http"
-	r.Header.Set("Kyp-Proxy", "KypProxy")
+	r.Header.Set("KypProxy", "X-Kyp-Proxy")
 }

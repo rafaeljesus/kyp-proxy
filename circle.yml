@@ -1,0 +1,16 @@
+machine:
+  services:
+    - docker
+
+test:
+  override:
+    - echo "test"
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - docker build -t rafaeljesus/kyp-proxy .
+      - docker login -e $DOCKERHUB_EMAIL -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - docker tag rafaeljesus/kyp-proxy rafaeljesus/kyp-proxy:master
+      - docker push rafaeljesus/kyp-proxy:master
